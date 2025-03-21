@@ -56,6 +56,7 @@ namespace First.BLL.Services
         {
             var Department = _departmintRepositoriy.GetById(Id);
             if (Department is null) return false;
+
             else
             {
                 int Result = _departmintRepositoriy.Remove(Department);
