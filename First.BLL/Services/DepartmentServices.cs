@@ -64,5 +64,10 @@ namespace First.BLL.Services
             }
 
         }
+
+        public int CreateDepartment(CreatedDebartmentDTO departmentDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

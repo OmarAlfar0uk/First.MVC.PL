@@ -16,7 +16,7 @@ namespace First.BLL.Factories
             return new Department()
             {
                 Name = departmentDto.Name,
-                Code = departmentDto.Code,
+                Code  = departmentDto.Code,
                 Description = departmentDto.Description,
                 CreateOn = departmentDto.DateOfCreation.ToDateTime(new TimeOnly())
             };

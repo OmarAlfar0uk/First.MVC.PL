@@ -1,3 +1,4 @@
+using First.BLL.Services;
 using First.DAL.Data.Contexts;
 using First.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace First.PL
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             builder.Services.AddScoped<IDepartmintRepositoriy, DepartmintRepositoriy>();
+            builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
             #endregion  
 
             var app = builder.Build();
