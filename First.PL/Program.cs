@@ -1,6 +1,7 @@
 using First.BLL.Services;
 using First.DAL.Data.Contexts;
-using First.DAL.Repositories;
+using First.DAL.Repositories.Classes;
+using First.DAL.Repositories.Interfases;
 using Microsoft.EntityFrameworkCore;
 
 namespace First.PL

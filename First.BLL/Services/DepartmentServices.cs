@@ -1,6 +1,6 @@
 ﻿using First.BLL.DataTransferObjects;
 using First.BLL.Factories;
-using First.DAL.Repositories;
+using First.DAL.Repositories.Interfases;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -6,6 +6,7 @@ namespace First.DAL.Data.Contexts
     public class AppDBContext(DbContextOptions<AppDBContext> options) : DbContext(options)
     {
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
