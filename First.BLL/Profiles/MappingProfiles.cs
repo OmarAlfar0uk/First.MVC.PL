@@ -16,12 +16,15 @@ namespace First.BLL.Profiles
         {
             CreateMap<Employee, EmployeeDto>()
                 .ForMember(dest => dest.EmpGender, Options => Options.MapFrom(src => src.Gender))
-                .ForMember(dest => dest.EmpType, Options => Options.MapFrom(src => src.EmployeeType));
+                .ForMember(dest => dest.EmpType, Options => Options.MapFrom(src => src.EmployeeType))
+                .ForMember(dest => dest.Department, Options => Options.MapFrom(src => src.Department.Name !=null ? src.Department.Name:null));
 
             CreateMap<Employee, EmployeeDetailsDto>()
                  .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
                  .ForMember(dest => dest.EmployeeType, opt => opt.MapFrom(src => src.EmployeeType))
-                    .ForMember(dest => dest.HiringDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.HiringDate)));
+                    .ForMember(dest => dest.HiringDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.HiringDate)))
+                  .ForMember(dest => dest.Department, Options => Options.MapFrom(src => src.Department.Name != null ? src.Department.Name : null));
+
 
             CreateMap<CreatedEmployeeDto, Employee>()
                  .ForMember(dest => dest.HiringDate, opt => opt.MapFrom(src => src.HiringDate.ToDateTime(TimeOnly.MinValue)));

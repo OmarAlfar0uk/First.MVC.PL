@@ -18,20 +18,29 @@ namespace First.PL.Controllers
         [HttpGet]
         public IActionResult Create() => View();
         [HttpPost]
-        public IActionResult Create(CreatedDebartmentDTO departmentDto)
+        public IActionResult Create(DepartmentViewModel departmentViewModel)
         {
             if (ModelState.IsValid) // Server Side Validation
             {
                 try
                 {
-                    int Result = _departmentService.AddDepartment(departmentDto);
-                    if (Result > 0)
-                        return RedirectToAction(nameof(Index));
-                    else
+                    var departmentDto = new CreatedDebartmentDTO()
                     {
-                        ModelState.AddModelError(string.Empty, "Department Can't Be Created");
+                        Code = departmentViewModel.Code,
+                        Name = departmentViewModel.Name,
+                        DateOfCreation = departmentViewModel.CreatedOn,
+                        Description = departmentViewModel.Description
+                    };
+                    int Result = _departmentService.AddDepartment(departmentDto);
+                    string Message;
+                    if (Result > 0)
+                        Message = $"Department {departmentViewModel.Name} Is Created Successfully";
+                    else
+                        Message = $"Department {departmentViewModel.Name} Cannot Be Created";
 
-                    }
+                    TempData["Message"] = Message ;
+                    return RedirectToAction(nameof(Index));
+
                 }
                 catch (Exception ex)
                 {
@@ -50,7 +59,7 @@ namespace First.PL.Controllers
                     }
                 }
             }
-            return View(departmentDto);
+            return View(departmentViewModel);
         }
 
         #endregion
@@ -71,7 +80,7 @@ namespace First.PL.Controllers
             if (!id.HasValue) return BadRequest(); // 400
             var department = _departmentService.GetDepartmentById(id.Value);
             if (department is null) return NotFound();// 404
-            var departmentViewModel = new DepartmentEditViewModel()
+            var departmentViewModel = new DepartmentViewModel()
             {
                 Code = department.Code,
                 Name = department.Name,
@@ -82,7 +91,7 @@ namespace First.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute] int id, DepartmentEditViewModel viewModel)
+        public IActionResult Edit([FromRoute] int id, DepartmentViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
