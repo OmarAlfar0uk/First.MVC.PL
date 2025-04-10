@@ -47,6 +47,7 @@ namespace First.PL.Controllers
                         HiringDate = employeeViewModel.HiringDate,
                         PhoneNumber = employeeViewModel.PhoneNumber ,
                         DepartmentId = employeeViewModel.DepartmentId,
+                        Img = employeeViewModel.Img
 
 
                     };

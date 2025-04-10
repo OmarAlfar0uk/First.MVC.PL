@@ -28,6 +28,8 @@ namespace First.BLL.DataTransferObjects.EmployeeDataTransferObject
         public DateTime? LastModifiedOn { get; set; }
 
         public string? Department { get; set; }
+
+        public string? Img { get; set; }
         public int? DepartmentId { get; set; }
     }
 }

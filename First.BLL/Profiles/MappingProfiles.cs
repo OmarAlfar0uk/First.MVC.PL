@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using First.BLL.DataTransferObjects.EmployeeDataTransferObject;
 using First.DAL.Models.EmployeeModels;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,9 @@ namespace First.BLL.Profiles
                  .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
                  .ForMember(dest => dest.EmployeeType, opt => opt.MapFrom(src => src.EmployeeType))
                     .ForMember(dest => dest.HiringDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.HiringDate)))
-                  .ForMember(dest => dest.Department, Options => Options.MapFrom(src => src.Department.Name != null ? src.Department.Name : null));
+                  .ForMember(dest => dest.Department, Options => Options.MapFrom(src => src.Department.Name != null ? src.Department.Name : null))
+                  .ForMember(dest => dest.Img, Options => Options.MapFrom(src => src.ImgName));
+
 
 
             CreateMap<CreatedEmployeeDto, Employee>()

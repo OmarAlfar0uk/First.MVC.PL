@@ -1,9 +1,12 @@
 using First.BLL.Profiles;
+using First.BLL.Services.AttachementServices;
 using First.BLL.Services.DepartmentServices;
 using First.BLL.Services.EmployeeServices;
 using First.DAL.Data.Contexts;
+using First.DAL.Models.IdentityModel;
 using First.DAL.Repositories.Classes;
 using First.DAL.Repositories.Interfasecs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,6 +41,11 @@ namespace First.PL
             builder.Services.AddAutoMapper(M=>M.AddProfile(new MappingProfiles()));
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddScoped<IAttachementServices , AttachementServices>();
+
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDBContext>();
             #endregion  
 
             var app = builder.Build();
@@ -60,7 +68,7 @@ namespace First.PL
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
 
             #endregion
             app.Run();
