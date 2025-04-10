@@ -19,20 +19,25 @@ namespace First.PL
 
             builder.Services.AddControllersWithViews(options =>
             {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());   
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());  
+                
             } );
 
             IServiceCollection serviceCollection = builder.Services.AddDbContext<AppDBContext>(options =>
-                  options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            { 
+                  options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.UseLazyLoadingProxies();
 
-
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            });
+            //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
             
-            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IEmployeeServices, EmployeeService>();
 
             builder.Services.AddAutoMapper(M=>M.AddProfile(new MappingProfiles()));
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             #endregion  
 
             var app = builder.Build();

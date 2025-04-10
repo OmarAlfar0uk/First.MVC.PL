@@ -24,5 +24,8 @@ namespace First.BLL.DataTransferObjects.EmployeeDataTransferObject
         public Gender EmpGender { get; set; }
         [Display(Name = "Employee Type")]
         public EmployeeType EmpType { get; set; }
+
+        public string? Department { get; set; }
+
     }
 }

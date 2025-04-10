@@ -1,4 +1,5 @@
-﻿using First.DAL.Models.Shared.Enums;
+﻿using First.DAL.Models.DepartmentModels;
+using First.DAL.Models.Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,8 @@ namespace First.DAL.Models.EmployeeModels
         public DateTime HiringDate { get; set; }
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
+
+        public int? DepartmentId { get; set; }
+        public virtual Department? Department { get; set; }
     }
 }

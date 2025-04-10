@@ -3,6 +3,7 @@ using First.DAL.Repositories.Interfasecs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,22 +29,25 @@ namespace First.DAL.Repositories.Classes
             }
         }
         // Insert
-        public int Add(TEntity entity)
+        public void Add(TEntity entity)
         {
             _dbContext.Set<TEntity>().Add(entity);
-            return _dbContext.SaveChanges();
         }
         // Update
-        public int Update(TEntity entity)
+        public void Update(TEntity entity)
         {
             _dbContext.Set<TEntity>().Update(entity);
-            return _dbContext.SaveChanges();
         }
         // Delete
-        public int Delete(TEntity entity)
+        public void Delete(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
-            return _dbContext.SaveChanges();
+        }
+
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbContext.Set<TEntity>()
+                .Where(predicate).ToList();    
         }
     }
 }
