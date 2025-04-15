@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using First.BLL.DataTransferObjects.EmployeeDataTransferObject;
+using First.BLL.Services.AttachementServices;
 using First.DAL.Models.EmployeeModels;
 using First.DAL.Repositories.Interfasecs;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace First.BLL.Services.EmployeeServices
 {
-    public class EmployeeService(IUnitOfWork _unitOfWork, IMapper _mapper) : IEmployeeServices
+    public class EmployeeService(IUnitOfWork _unitOfWork, IMapper _mapper ,IAttachementServices _attachementServices) : IEmployeeServices
     {
         // Get All Employees
         public IEnumerable<EmployeeDto> GetAllEmployees(string? EmployeeSearchName)
@@ -28,7 +29,7 @@ namespace First.BLL.Services.EmployeeServices
         }
 
         // Get Employee By Id
-        public EmployeeDetailsDto? GetEmployeeById(int id)
+        public EmployeeDetailsDto? GetEmployeeById(int id)  
         {
             var employee = _unitOfWork.EmployeeRepository.GetById(id);
             return employee is null ? null : _mapper.Map<Employee, EmployeeDetailsDto>(employee);
@@ -41,6 +42,14 @@ namespace First.BLL.Services.EmployeeServices
         public int AddEmployee(CreatedEmployeeDto employeeDto)
         {
             var employee = _mapper.Map<CreatedEmployeeDto, Employee>(employeeDto);
+            if(employeeDto.Img is not null)
+            {
+                employee.ImgName = _attachementServices.Uplode(employeeDto.Img, "Img");
+            }
+
+
+
+
              _unitOfWork.EmployeeRepository.Add(employee);
             return _unitOfWork.SaveChanges();
         }

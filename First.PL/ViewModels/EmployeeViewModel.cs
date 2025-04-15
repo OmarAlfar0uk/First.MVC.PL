@@ -40,6 +40,6 @@ namespace First.PL.ViewModels
         [Display(Name = "Department")]
         public int? DepartmentId { get; set; }
 
-        public SelectList? Departments { get; set; }
+        public IFormFile? Img { get; set; }
     }
 }
