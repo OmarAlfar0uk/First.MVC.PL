@@ -1,11 +1,12 @@
 ﻿using First.DAL.Models.IdentityModel;
-using First.PL.ViewModels;
+using First.PL.Utilities;
+using First.PL.ViewModels.AccountView;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace First.PL.Controllers
 {
-    public class AccountController(UserManager<AppUser> _userManager) : Controller
+    public class AccountController(UserManager<AppUser> _userManager , SignInManager<AppUser> _signInManger) : Controller
     {
         [HttpGet]
         public IActionResult Register() => View();
@@ -13,7 +14,7 @@ namespace First.PL.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel viewModel)
         {
-              if(!ModelState.IsValid) return View(viewModel);
+            if (!ModelState.IsValid) return View(viewModel);
             var User = new AppUser()
             {
                 FirstName = viewModel.FirstName,
@@ -23,14 +24,14 @@ namespace First.PL.Controllers
 
             };
 
-           var Result = _userManager.CreateAsync(User, viewModel.Password).Result;
-            if(Result.Succeeded)
+            var Result = _userManager.CreateAsync(User, viewModel.Password).Result;
+            if (Result.Succeeded)
             {
-                return RedirectToAction("Login");   
+                return RedirectToAction("Login");
             }
             else
             {
-                foreach(var error in Result.Errors)
+                foreach (var error in Result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -38,5 +39,109 @@ namespace First.PL.Controllers
             }
         }
 
+
+        #region Login
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(LoginViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+
+            var user = _userManager.FindByEmailAsync(viewModel.Email).Result; // Check User exist With Same Email Or Not
+            if (user is not null)
+            {
+                bool flag = _userManager.CheckPasswordAsync(user, viewModel.Password).Result;
+                if (flag) //email exist && password correct
+                {
+                    var Result = _signInManger.PasswordSignInAsync(user, viewModel.Password, viewModel.RememberMe, false).Result;
+                    if (Result.IsNotAllowed)
+                        ModelState.AddModelError(string.Empty, "Your Account Is Not Allowed");
+                    if (Result.IsLockedOut)
+                        ModelState.AddModelError(string.Empty, "Your Account Is Locked Out");
+                    if (Result.Succeeded)
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Invalid Login");
+            }
+            return View(viewModel);
+        }
+
+        #endregion
+
+        #region Forget Password
+        [HttpGet]
+        public IActionResult ForgetPassword() => View();
+
+        [HttpPost]
+        public IActionResult SendResetPasswordLink(ForgetPasswordViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var User = _userManager.FindByEmailAsync(viewModel.Email).Result;
+                if (User is not null)
+                {
+                    var Token = _userManager.GeneratePasswordResetTokenAsync(User).Result;
+                    // BaseUrl/Account/ResetPassword?email=mohmmeadkhalef22@gmail.com&Token
+                    var ResetPasswordLink = Url.Action("ResetPassword", "Account", new { email = viewModel.Email, Token }, Request.Scheme);
+                    var email = new Utilities.Email()
+                    {
+                        To = viewModel.Email,
+                        Subject = "Reset Password",
+                        Body = "Reset Password Link" //TODO
+                    };
+                    // Send Email
+                    EmailSettings.SendEmail(email);
+                    return RedirectToAction(nameof(CheckYourInbox));
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Invalid Operation");
+            return View(nameof(ForgetPassword), viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult CheckYourInbox() => View();
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string Token)
+        {
+            TempData["email"] = email;
+            TempData["Token"] = Token;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword(ResetPasswordViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+
+            string email = TempData["email"] as string ?? string.Empty;
+            string Token = TempData["Token"] as string ?? string.Empty;
+
+            var User = _userManager.FindByEmailAsync(email).Result;
+            if (User is not null)
+            {
+                var Result = _userManager.ResetPasswordAsync(User, Token, viewModel.Password).Result;
+                if (Result.Succeeded)
+                    return RedirectToAction(nameof(Login));
+                else
+                {
+                    foreach (var error in Result.Errors)
+                        ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+            }
+            return View(nameof(ResetPassword), viewModel);
+
+        }
+        #endregion
     }
 }

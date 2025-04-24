@@ -49,5 +49,13 @@ namespace First.DAL.Repositories.Classes
             return _dbContext.Set<TEntity>()
                 .Where(predicate).ToList();    
         }
+
+        //public IEnumerable<TEntity> GetAll<TResult>(Expression<Func<TEntity, TResult>> Selector)
+        //{
+        //    return _dbContext.Set<TEntity>()
+        //                             .Where(e => e.IsDeleted != true)
+        //                             .Select(Selector)
+        //                             .ToList();
+        //}
     }
 }

@@ -4,7 +4,7 @@ using First.BLL.Services.DepartmentServices;
 using First.BLL.Services.EmployeeServices;
 using First.DAL.Models.EmployeeModels;
 using First.DAL.Models.Shared.Enums;
-using First.PL.ViewModels;
+using First.PL.ViewModels.EmployeeViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace First.PL.Controllers

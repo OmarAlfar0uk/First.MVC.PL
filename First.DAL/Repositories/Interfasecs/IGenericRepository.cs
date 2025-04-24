@@ -14,7 +14,7 @@ namespace First.DAL.Repositories.Interfasecs
         IEnumerable<TEntity> GetAll(bool WithTracking = false);
         IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate);
 
-        //IEnumerable<TEntity> GetAll<TResult>(Exception<Func<TEntity, TResult>> Selector);
+        //IEnumerable<TEntity> GetAll<TResult>(Expression<Func<TEntity, TResult>> Selector);
 
 
         TEntity? GetById(int id);

@@ -12,11 +12,11 @@ namespace First.DAL.Models
 
         public int CreatedBy { get; set; } //User Id
 
-        public DateTime CreateOn { get; set; }
+        public DateTime? CreateOn { get; set; }
 
         public int LastModifiedBy { get; set; } //UserId
 
-        public DateTime LastModifiedOn { get; set; }
+        public DateTime? LastModifiedOn { get; set; }
 
         public bool IsDeleted { get; set; } //SoftDelet
     }
