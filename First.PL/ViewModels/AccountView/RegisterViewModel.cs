@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace First.PL.ViewModels
+namespace First.PL.ViewModels.AccountView
 {
     public class RegisterViewModel
     {

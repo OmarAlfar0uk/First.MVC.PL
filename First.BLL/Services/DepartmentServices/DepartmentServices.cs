@@ -23,7 +23,7 @@ namespace First.BLL.Services.DepartmentServices
                 Code = D.Code,
                 Name = D.Name,
                 Description = D.Description,
-                DateOfCreation = DateOnly.FromDateTime(D.CreateOn)
+                DateOfCreation = DateOnly.FromDateTime(D.CreateOn.GetValueOrDefault())
             });
             return departmentsToReturn;
         }
@@ -35,7 +35,7 @@ namespace First.BLL.Services.DepartmentServices
             {
                 Id = department.Id,
                 Name = department.Name,
-                CreateOn = DateOnly.FromDateTime(department.CreateOn)
+                CreateOn = DateOnly.FromDateTime(department.CreateOn ?? DateTime.MinValue)
             };
 
 

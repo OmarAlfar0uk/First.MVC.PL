@@ -3,7 +3,7 @@ using First.DAL.Models.Shared.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace First.PL.ViewModels
+namespace First.PL.ViewModels.EmployeeViewModel
 {
     public class EmployeeViewModel
     {
